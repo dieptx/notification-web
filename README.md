@@ -4,6 +4,7 @@ This is a web application that allows you to add and show notifications.
 
 ## Prerequisites
 
+- Node.js 20.14.0
 - [Next.js](https://nextjs.org) 14.2.4
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
@@ -14,13 +15,19 @@ This is a web application that allows you to add and show notifications.
 
 ## Installation
 
+If you're using `nvm`
+
 ```bash
-pnpm install
+nvm use && pnpm install
 ```
+
+if not, please make sure your node env is set to 20.14.x
 
 If you do not install `pnpm` please follow the [installation instructions](https://pnpm.io/installation)
 
 ## Start Development
+
+### Start Database
 
 ```bash
 ./start-database.sh
@@ -28,9 +35,22 @@ If you do not install `pnpm` please follow the [installation instructions](https
 
 Note: This will start the database then, check the environment variables in `.env` to see
 
+### Apply migration
+
+```bash
+pnpm db:generate
+```
+
+### Seeding data
+
+````bash
+pnpm seed
+```
+
+
 ```bash
 pnpm dev
-```
+````
 
 ## How do I deploy this?
 
