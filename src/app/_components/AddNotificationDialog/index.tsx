@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -48,6 +48,12 @@ export default function AddNotificationDialog() {
     name: "type",
   });
 
+  React.useEffect(() => {
+    if (!showModal) {
+      reset();
+    }
+  }, [showModal]);
+
   const handleNotificationTypeChange = (value: any) => {
     reset({
       type: value,
@@ -74,12 +80,15 @@ export default function AddNotificationDialog() {
     setShowModal(false);
     reset();
   };
-  console.log("🚀 ~ AddNotificationDialog ~ errors:", errors);
 
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger>
-        <Button variant="outline" className="outline-none" size="icon">
+        <Button
+          variant="outline"
+          className="border-none outline-none"
+          size="icon"
+        >
           <PlusCircleIcon />
         </Button>
       </DialogTrigger>

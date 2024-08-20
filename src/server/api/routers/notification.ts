@@ -8,8 +8,8 @@ import {
   markAsReadNotificationValidationSchema,
 } from "../schema";
 
-const DEFAULT_PAGE = 0;
-const DEFAULT_LIMIT = 10;
+export const DEFAULT_PAGE = 0;
+export const DEFAULT_LIMIT = 10;
 
 export const notificationRouter = createTRPCRouter({
   addNotification: protectedProcedure
@@ -28,7 +28,7 @@ export const notificationRouter = createTRPCRouter({
 
       const { type, sender, releaseNumber } = input;
 
-      const foundSender = await ctx.db.user.findUnique({
+      const foundSender = await ctx.db.user.findFirst({
         where: { name: { contains: sender?.trim() } },
       });
       // Validate the input based on notification type
@@ -44,7 +44,7 @@ export const notificationRouter = createTRPCRouter({
         (type === NotificationType.COMMENT_TAG ||
           type === NotificationType.JOIN_WORKSPACE ||
           type === NotificationType.ACCESS_GRANTED) &&
-        !sender
+        !foundSender
       ) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -53,14 +53,26 @@ export const notificationRouter = createTRPCRouter({
         });
       }
 
+      const foundNotificationType = await ctx.db.notificationSetting.findFirst({
+        where: { type },
+      });
+
+      if (!foundNotificationType) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "Can not create notification. Notification type does not exist",
+        });
+      }
+
       // Create the notification
       const notification = await ctx.db.notification.create({
         data: {
-          notificationSettingId: 1,
+          notificationSettingId: foundNotificationType.id,
           message: "",
           releaseNumber: releaseNumber ?? null,
-          senderId: senderId ?? null,
-          personName: sender?.name ?? null,
+          senderId: foundSender?.id ?? null,
+          personName: sender ?? null,
         },
       });
 
@@ -86,6 +98,7 @@ export const notificationRouter = createTRPCRouter({
       const notifications = await ctx.db.notification.findMany({
         include: {
           sender: true,
+          notificationSetting: true,
         },
         skip,
         take: limit,
@@ -105,6 +118,8 @@ export const notificationRouter = createTRPCRouter({
         notifications,
         totalCount,
         unreadCount,
+        page,
+        limit,
       };
     }),
 

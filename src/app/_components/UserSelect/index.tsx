@@ -53,7 +53,7 @@ export function UserSelect({ name, control, rules }: Props) {
           className="w-full justify-between"
         >
           {value
-            ? users.find((user) => user.name === value.id)?.name
+            ? users.find((user) => user.name === value)?.name
             : "Select user..."}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
