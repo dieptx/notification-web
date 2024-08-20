@@ -104,3 +104,16 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+const authMiddleware = t.middleware(async ({ next }) => {
+  // Check if user is authenticated
+  // TODO: Enable this one if you want to use authentication or authorization
+  // if (!ctx.session?.user) {
+  //   throw new Error('Not authenticated');
+  // }
+
+  // If authenticated, proceed with the procedure
+  const result = await next();
+  return result;
+});
+export const protectedProcedure = t.procedure.use(authMiddleware);

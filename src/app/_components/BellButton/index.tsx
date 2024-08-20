@@ -27,6 +27,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { BellIcon } from "~/components/icon/bell-icon";
 import { XIcon } from "~/components/icon/x-icon";
+import AddNotificationDialog from "../AddNotificationDialog";
 
 export default function BellButton() {
   const [showModal, setShowModal] = useState(false);
@@ -79,13 +80,7 @@ export default function BellButton() {
               <p className="text-sm font-medium">
                 You have 3 new notifications
               </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowModal(true)}
-              >
-                Add New
-              </Button>
+              <AddNotificationDialog />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">

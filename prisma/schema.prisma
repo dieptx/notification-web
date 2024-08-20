@@ -25,3 +25,39 @@ enum NotificationType {
   ACCESS_GRANTED
   JOIN_WORKSPACE
 }
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  avatar    String?   
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  notificationsSent Notification[] @relation("UserNotificationsSent")
+  notificationsReceived Notification[] @relation("UserNotificationsReceived")
+}
+
+model Notification {
+  id           Int       @id @default(autoincrement())
+  notificationSettingId Int
+  notificationSetting         NotificationSetting @relation("NotificationSetting", fields: [notificationSettingId], references: [id])
+  message      String
+  releaseNumber String?   // Only for PLATFORM_UPDATE update notification
+  personName   String?    // Only for COMMENT_TAG, ACCESS_GRANTED, JOIN_WORKSPACE
+  isRead       Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  
+  senderId  Int?       
+  sender    User?      @relation("UserNotificationsSent", fields: [senderId], references: [id])
+
+  recipientId Int?        
+  recipient   User?       @relation("UserNotificationsReceived", fields: [recipientId], references: [id])
+}
+
+model NotificationSetting {
+  id Int       @id @default(autoincrement())
+  type         NotificationType
+  color        String
+
+  notifications Notification[] @relation("NotificationSetting")
+}
