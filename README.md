@@ -4,7 +4,7 @@ This is a web application that allows you to add and show notifications.
 
 ## Prerequisites
 
-- [Next.js](https://nextjs.org) 14.2.5
+- [Next.js](https://nextjs.org) 14.2.4
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
