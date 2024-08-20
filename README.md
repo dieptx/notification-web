@@ -59,6 +59,8 @@ and use Vercel Postgres Database - https://vercel.com/postgres
 
 ## Demo
 
+Since I cannot deploy to Vercel due to an issue related to tRPC v11 [https://github.com/trpc/trpc/discussions/5919], I created the images for the demo.
+
 ![Add new](./demo/pic-1.png?raw=true "Add new")
 ![List](./demo/pic-2.png?raw=true "List")
 ![Add new res](./demo/pic-3.png?raw=true "Add new res")
