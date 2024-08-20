@@ -9,12 +9,12 @@ import {
   DropdownMenuSeparator,
 } from "~/components/ui/dropdown-menu";
 import { Button } from "~/components/ui/button";
-import { BellIcon } from "~/components/icon/bell-icon";
 import AddNotificationDialog from "../AddNotificationDialog";
 import { NotificationItem } from "../NotificationItem";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { ArrowDownIcon } from "@radix-ui/react-icons";
 import { useNotifications } from "~/app/hooks/use-notifications";
+import { BellRingIcon } from "lucide-react";
 
 const BellButton = () => {
   const [open, setOpen] = React.useState(false);
@@ -30,7 +30,7 @@ const BellButton = () => {
               {unreadCount}
             </span>
           )}
-          <BellIcon className="h-5 w-5 text-black" />
+          <BellRingIcon className="h-5 w-5 text-black" />
           <span className="sr-only">Notifications</span>
         </Button>
       </DropdownMenuTrigger>
