@@ -37,6 +37,13 @@ pnpm dev
 Deploy it with Vercel - https://vercel.com/
 and use Vercel Postgres Database - https://vercel.com/postgres
 
+## Demo
+
+![Add new](./demo/pic-1.png?raw=true "Add new")
+![List](./demo/pic-2.png?raw=true "List")
+![Add new res](./demo/pic-3.png?raw=true "Add new res")
+![List res](./demo/pic-4.png?raw=true "List res")
+
 ## Refs
 
 - T3 Stack - https://create.t3.gg/
