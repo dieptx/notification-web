@@ -1,6 +1,5 @@
 "use client";
 
-import { DEFAULT_LIMIT } from "~/server/api/routers/notification";
 
 import { api } from "~/trpc/react";
 
@@ -9,7 +8,7 @@ import { api } from "~/trpc/react";
 export function useNotifications() {
 
   const {data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage, refetch} = api.notification.getUserNotifications.useInfiniteQuery({
-    limit: DEFAULT_LIMIT,
+    limit: 10,
   },
   {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
