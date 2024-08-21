@@ -16,6 +16,8 @@ const config = {
     "react/display-name": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/no-unsafe-return": "warn",
+    "@typescript-eslint/no-unsafe-member-access": "warn",
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {

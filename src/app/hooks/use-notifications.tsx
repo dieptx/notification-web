@@ -1,50 +1,24 @@
 "use client";
 
-import { Notification } from "@prisma/client";
-import { useState, useEffect } from "react";
+import { DEFAULT_LIMIT } from "~/server/api/routers/notification";
 
 import { api } from "~/trpc/react";
 
+
+
 export function useNotifications() {
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [notificationsPagination, { isLoading, refetch }] =
-    api.notification.getUserNotifications.useSuspenseQuery({
-      page,
-    });
 
-  const {
-    notifications: fetchedNotifications,
-    unreadCount,
-    limit,
-    page: serverPage,
-  } = notificationsPagination;
-
-  useEffect(() => {
-    if (fetchedNotifications.length === 0) {
-      setHasMore(false);
-    } else {
-      if (!page) {
-        setNotifications(fetchedNotifications);
-      }
-    }
-  }, [fetchedNotifications]);
-
-  const loadMore = () => {
-    if (!isLoading && hasMore) {
-      setPage(page + 1);
-    }
-  };
+  const {data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage} = api.notification.getUserNotifications.useInfiniteQuery({
+    limit: DEFAULT_LIMIT,
+  },
+  {
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  })
 
   return {
-    unreadCount,
-    notifications,
-    page,
-    limit,
-    hasMore,
-    loadMore,
-    isLoading,
-    refetch,
+    data,
+    hasNextPage,
+    fetchNextPage,
+    isLoading: (isFetchingNextPage || isFetching),
   };
 }

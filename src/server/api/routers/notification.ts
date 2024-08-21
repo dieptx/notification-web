@@ -92,20 +92,26 @@ export const notificationRouter = createTRPCRouter({
         }
        */
 
-      const { page = DEFAULT_PAGE, limit = DEFAULT_LIMIT } = input;
-      const skip = page * limit;
+      const limit = input?.limit ?? DEFAULT_PAGE;
+      const { cursor } = input;
 
-      const notifications = await ctx.db.notification.findMany({
+      const items = await ctx.db.notification.findMany({
         include: {
           sender: true,
           notificationSetting: true,
         },
-        skip,
-        take: limit,
+        cursor: input.cursor ? { id: input.cursor } : undefined,
+        take: limit + 1,
         orderBy: {
           createdAt: "desc",
         },
       });
+
+      let nextCursor: number | undefined = undefined;
+      if (items.length > limit) {
+        const nextNotification = items.pop();
+        nextCursor = nextNotification?.id;
+      }
 
       const totalCount = await ctx.db.notification.count();
 
@@ -115,10 +121,10 @@ export const notificationRouter = createTRPCRouter({
         },
       });
       return {
-        notifications,
+        notifications: items,
         totalCount,
         unreadCount,
-        page,
+        nextCursor,
         limit,
       };
     }),

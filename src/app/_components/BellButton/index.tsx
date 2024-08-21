@@ -15,21 +15,24 @@ import { ScrollArea } from "~/components/ui/scroll-area";
 import { ArrowDownIcon } from "@radix-ui/react-icons";
 import { useNotifications } from "~/app/hooks/use-notifications";
 import { BellRingIcon } from "lucide-react";
+import { api } from "~/trpc/react";
 
 const BellButton = () => {
   const [open, setOpen] = React.useState(false);
-  const { unreadCount, notifications, hasMore, loadMore, isLoading, refetch } =
+  const { data, hasNextPage, fetchNextPage, isLoading } =
     useNotifications();
+
+  const { data: unreadCount } = api.notification.getUnreadCount.useQuery();
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild className="focus-visible:ring-0">
         <Button variant="outline" size="icon" className="relative rounded-full">
-          {unreadCount > 0 && (
+          {unreadCount ? (
             <span className="absolute right-[-6px] top-[-6px] inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
               {unreadCount}
             </span>
-          )}
+          ) : null}
           <BellRingIcon className="h-5 w-5 text-black" />
           <span className="sr-only">Notifications</span>
         </Button>
@@ -47,25 +50,28 @@ const BellButton = () => {
             <AddNotificationDialog />
           </div>
           <ScrollArea className="h-[400px] space-y-2">
-            {notifications?.map((notification) => (
-              <NotificationItem
-                item={notification as any}
-                key={notification.id + "_" + notification.notificationSettingId}
-                onItemClick={async () => {
-                  await refetch();
-                  setOpen(false);
-                }}
-              />
-            ))}
+            {
+              data?.pages?.map((page) => 
+                  page.notifications.map((notification) => (
+                    <NotificationItem
+                      item={notification as any}
+                      key={notification.id + "_" + notification.notificationSettingId}
+                      onItemClick={async () => {
+                        // await refetch();
+                        setOpen(false);
+                      }}
+                    />
+                  ))
+              )}
           </ScrollArea>
-          {hasMore && (
+          {hasNextPage && (
             <div className="flex justify-center">
               <Button
                 variant="outline"
                 size="sm"
                 className="px-4 py-2"
                 disabled={isLoading}
-                onClick={loadMore}
+                onClick={() => fetchNextPage()}
               >
                 {isLoading ? (
                   <div className="mr-2" />

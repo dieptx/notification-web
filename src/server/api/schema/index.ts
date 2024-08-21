@@ -31,8 +31,8 @@ export const addNotificationValidationSchema = z
   });
 
 export const filterUserNotificationsValidationSchema = z.object({
-  page: z.number().min(0).optional(),
-  limit: z.number().min(1).max(100).optional(),
+  limit: z.number().min(1).max(100).nullish(),
+  cursor: z.number().nullish(),
 });
 
 export const markAsReadNotificationValidationSchema = z.object({
