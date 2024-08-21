@@ -8,7 +8,7 @@ import { api } from "~/trpc/react";
 
 export function useNotifications() {
 
-  const {data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage} = api.notification.getUserNotifications.useInfiniteQuery({
+  const {data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage, refetch} = api.notification.getUserNotifications.useInfiniteQuery({
     limit: DEFAULT_LIMIT,
   },
   {
@@ -20,5 +20,6 @@ export function useNotifications() {
     hasNextPage,
     fetchNextPage,
     isLoading: (isFetchingNextPage || isFetching),
+    refetch
   };
 }

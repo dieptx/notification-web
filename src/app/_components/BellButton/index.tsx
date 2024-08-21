@@ -19,7 +19,7 @@ import { api } from "~/trpc/react";
 
 const BellButton = () => {
   const [open, setOpen] = React.useState(false);
-  const { data, hasNextPage, fetchNextPage, isLoading } =
+  const { data, hasNextPage, fetchNextPage, isLoading, refetch } =
     useNotifications();
 
   const { data: unreadCount } = api.notification.getUnreadCount.useQuery();
@@ -57,7 +57,7 @@ const BellButton = () => {
                       item={notification as any}
                       key={notification.id + "_" + notification.notificationSettingId}
                       onItemClick={async () => {
-                        // await refetch();
+                        await refetch();
                         setOpen(false);
                       }}
                     />
