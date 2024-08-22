@@ -43,14 +43,14 @@ yarn db:generate
 
 ### Seeding data
 
-````bash
+```bash
 yarn seed
 ```
 
 
 ```bash
 yarn dev
-````
+```
 ## Features
 * Show notifications (support infinite load more)
 * Add a notification with 4 types.
