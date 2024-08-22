@@ -18,12 +18,12 @@ This is a web application that allows you to add and show notifications.
 If you're using `nvm`
 
 ```bash
-nvm use && pnpm install
+nvm use && yarn
 ```
 
 if not, please make sure your node env is set to 20.14.x
 
-If you do not install `pnpm` please follow the [installation instructions](https://pnpm.io/installation)
+If you do not install `yarn` please follow the [installation instructions](https://yarnpkg.com/)
 
 ## Start Development
 
@@ -38,19 +38,23 @@ Note: This will start the database then, check the environment variables in `.en
 ### Apply migration
 
 ```bash
-pnpm db:generate
+yarn db:generate
 ```
 
 ### Seeding data
 
 ````bash
-pnpm seed
+yarn seed
 ```
 
 
 ```bash
-pnpm dev
+yarn dev
 ````
+## Features
+* Show notifications (support infinite load more)
+* Add a notification with 4 types.
+* Show a badge that can tell user's unread notifications
 
 ## How do I deploy this?
 
@@ -58,8 +62,6 @@ Deploy it with Vercel - https://vercel.com/
 and use Vercel Postgres Database - https://vercel.com/postgres
 
 ## Demo
-
-Since I cannot deploy to Vercel due to an issue related to tRPC v11 [https://github.com/trpc/trpc/discussions/5919], I created the images for the demo.
 
 ![Add new](./demo/pic-1.png?raw=true "Add new")
 ![List](./demo/pic-2.png?raw=true "List")
